@@ -27,7 +27,7 @@ public class BestScoreFragment extends BaseZAdsFragment {
     protected void initView(View view, Bundle savedInstanceState) {
         loadZAds(ZAdPosition.POSITION_BEST_SCORE);
 
-        Button button = (Button) view.findViewById(R.id.dialog_btn_ok);
+        Button button = (Button) view.findViewById(R.id.btn_ok);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

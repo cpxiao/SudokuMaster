@@ -145,13 +145,13 @@ public class SudokuFactory {
     private int getInitNumbersByDifficulty(int gameDifficulty) {
         double tmp = 0.6;
         if (gameDifficulty == Difficulty.DIFFICULTY_EASY[1]) {
-            tmp = 0.6;
+            tmp = 0.7;
         } else if (gameDifficulty == Difficulty.DIFFICULTY_NORMAL[1]) {
-            tmp = 0.55;
+            tmp = 0.6;
         } else if (gameDifficulty == Difficulty.DIFFICULTY_HARD[1]) {
             tmp = 0.5;
         } else if (gameDifficulty == Difficulty.DIFFICULTY_INSANE[1]) {
-            tmp = 0.45;
+            tmp = 0.4;
         } else {
             if (DEBUG) {
                 throw new IllegalArgumentException("gameDifficulty == " + gameDifficulty);

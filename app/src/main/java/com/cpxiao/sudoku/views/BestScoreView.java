@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,7 +16,6 @@ import com.cpxiao.androidutils.library.utils.PreferencesUtils;
 import com.cpxiao.sudoku.mode.extra.Difficulty;
 import com.cpxiao.sudoku.mode.extra.Extra;
 import com.cpxiao.sudoku.mode.extra.GameMode;
-import com.cpxiao.sudoku.views.game.GameView;
 
 /**
  * @author cpxiao on 2017/09/05.
@@ -23,7 +23,7 @@ import com.cpxiao.sudoku.views.game.GameView;
 
 public class BestScoreView extends View {
     private static final boolean DEBUG = AppConfig.DEBUG;
-    private static final String TAG = GameView.class.getSimpleName();
+    private static final String TAG = BestScoreView.class.getSimpleName();
 
 
     private long[][] mScoreArray;
@@ -31,6 +31,8 @@ public class BestScoreView extends View {
 
     private int countX = Difficulty.DIFFICULTY_ARRAY.length;
     private int countY = GameMode.MODE_ARRAY.length;
+
+    private RectF rectF = new RectF();
 
     static {
         mPaint.setAntiAlias(true);//抗锯齿,一般加这个就可以了，加另外两个可能会卡
@@ -54,6 +56,7 @@ public class BestScoreView extends View {
         init();
     }
 
+
     private void init() {
         Context context = getContext();
         mScoreArray = new long[countY][countX];
@@ -68,43 +71,42 @@ public class BestScoreView extends View {
         }
     }
 
-
-    private RectF rectF = new RectF();
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float width = getWidth();
-        float height = getHeight();
+        float viewWidth = getWidth();
+        float viewHeight = getHeight();
 
-        float scoreViewW = width / 6;
-        float scoreViewH = height / 8;
+        float scoreViewW = viewWidth / (countX + 2);
+        float scoreViewH = viewHeight / (countY + 2);
 
-        float titleW = width;
-        float titleH = height - scoreViewH * (countY + 1);
+        float titleW = viewWidth;
+        float titleH = viewHeight - scoreViewH * (countY + 1);
 
-        float modeW = width - scoreViewW * countX;
+        float modeW = viewWidth - scoreViewW * countX;
         float modeH = scoreViewH;
 
         float difficultW = scoreViewW;
         float difficultH = difficultW;
 
         //绘制title
-        mPaint.setTextSize(0.1F * width);
+        mPaint.setTextSize(0.1F * viewWidth);
+
         String title = getResources().getString(R.string.best_score);
         canvas.drawText(title, 0.5F * titleW, 0.6F * titleH, mPaint);
 
 
-        //绘制rectF
+        //绘制外边框rectF
         rectF.left = 0;
-        rectF.right = width;
+        rectF.right = viewWidth;
         rectF.top = titleH;
-        rectF.bottom = height;
+        rectF.bottom = viewHeight;
         mPaint.setStyle(Paint.Style.STROKE);
         canvas.drawRect(rectF, mPaint);
 
-        mPaint.setTextSize(0.045F * width);
         //绘制mode, 竖向
+        mPaint.setTextSize(0.22F * viewWidth / Math.max(countX, countY));
+        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
         for (int y = 0; y < countY; y++) {
             String msg = getResources().getString(GameMode.MODE_ARRAY[y][0]);
             float cY = titleH + modeH + scoreViewH * (y + 0.5F);
@@ -118,8 +120,9 @@ public class BestScoreView extends View {
             canvas.drawText(msg, cX, titleH + 0.5F * difficultH, mPaint);
         }
 
-        mPaint.setTextSize(0.04F * width);
         //绘制分数
+        mPaint.setTextSize(0.2F * viewWidth / Math.max(countX, countY));
+        mPaint.setTypeface(Typeface.DEFAULT);
         for (int y = 0; y < countY; y++) {
             for (int x = 0; x < countX; x++) {
                 String score = formatBestScore(mScoreArray[y][x]);
@@ -131,6 +134,9 @@ public class BestScoreView extends View {
     }
 
     private String formatBestScore(long bestScore) {
+        if (bestScore <= 0) {
+            return "--";
+        }
         return bestScore / 1000 / 60 + "\"" + bestScore / 1000 % 60 + "\'";
     }
 }

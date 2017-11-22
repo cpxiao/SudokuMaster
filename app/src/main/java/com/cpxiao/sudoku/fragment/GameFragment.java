@@ -42,7 +42,6 @@ public class GameFragment extends BaseZAdsFragment {
     protected void initView(View view, Bundle savedInstanceState) {
         loadZAds(ZAdPosition.POSITION_GAME);
 
-        //        Bundle bundle = getIntent().getExtras();
         Bundle bundle = getArguments();
         Context context = getHoldingActivity();
         if (bundle == null) {
@@ -57,7 +56,7 @@ public class GameFragment extends BaseZAdsFragment {
 
         mBigBlockCountX = bundle.getInt(GameMode.BIG_BLOCK_COUNT_X, 3);
         mBigBlockCountY = bundle.getInt(GameMode.BIG_BLOCK_COUNT_Y, 3);
-        mDifficulty = bundle.getInt(Difficulty.KEY_DIFFICULTY);
+        mDifficulty = bundle.getInt(Difficulty.KEY_DIFFICULTY, Difficulty.DIFFICULTY_DEFAULT[1]);
 
 
         initData(context, bundle);
@@ -120,13 +119,13 @@ public class GameFragment extends BaseZAdsFragment {
 
             final Context context = getHoldingActivity();
 
-            //停止计时，并记录最高分
-            mTimeTextView.pause();
             long time = mTimeTextView.getTimeMillis();
             long bestScore = getBestScore(context);
-            if (time < bestScore) {
+            if (bestScore == 0 || time < bestScore) {
                 updateBestScore(context, time);
             }
+            //停止计时，并记录最高分
+            mTimeTextView.pause();
 
             //弹出dialog
             AlertDialog dialog = new AlertDialog.Builder(context).
@@ -139,14 +138,11 @@ public class GameFragment extends BaseZAdsFragment {
 
                             initData(context, bundle);
                             isSuccess = false;
-                            //                            Intent intent = makeIntent(context, bundle);
-                            //                            startActivity(intent);
                         }
                     }).
                     setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //                            finish();
                             removeFragment();
                         }
                     }).
@@ -162,41 +158,14 @@ public class GameFragment extends BaseZAdsFragment {
 
     private long getBestScore(Context context) {
         int mode = mBigBlockCountX * mBigBlockCountY;
-        long bestScore = Extra.Key.KEY_BEST_SCORE_DEFAULT;
-
         String key = Extra.Key.getBestScoreKey(mode, mDifficulty);
-        bestScore = PreferencesUtils.getLong(context, key, bestScore);
-        return bestScore;
-
-        //        if (mode == 4) {
-        //            bestScore = PreferencesUtils.getLong(context, Extra.Key.KEY_BEST_SCORE_4, bestScore);
-        //        } else if (mode == 6) {
-        //            bestScore = PreferencesUtils.getLong(context, Extra.Key.KEY_BEST_SCORE_6, bestScore);
-        //        } else if (mode == 9) {
-        //            bestScore = PreferencesUtils.getLong(context, Extra.Key.KEY_BEST_SCORE_9, bestScore);
-        //        } else if (mode == 12) {
-        //            bestScore = PreferencesUtils.getLong(context, Extra.Key.KEY_BEST_SCORE_12, bestScore);
-        //        } else if (mode == 16) {
-        //            bestScore = PreferencesUtils.getLong(context, Extra.Key.KEY_BEST_SCORE_16, bestScore);
-        //        }
-        //        return bestScore;
+        return PreferencesUtils.getLong(context, key, Extra.Key.KEY_BEST_SCORE_DEFAULT);
     }
 
     private void updateBestScore(Context context, long bestScore) {
         int mode = mBigBlockCountX * mBigBlockCountY;
         String key = Extra.Key.getBestScoreKey(mode, mDifficulty);
         PreferencesUtils.putLong(context, key, bestScore);
-        //        if (mode == 4) {
-        //            PreferencesUtils.putLong(context, Extra.Key.KEY_BEST_SCORE_4, bestScore);
-        //        } else if (mode == 6) {
-        //            PreferencesUtils.putLong(context, Extra.Key.KEY_BEST_SCORE_6, bestScore);
-        //        } else if (mode == 9) {
-        //            PreferencesUtils.putLong(context, Extra.Key.KEY_BEST_SCORE_9, bestScore);
-        //        } else if (mode == 12) {
-        //            PreferencesUtils.putLong(context, Extra.Key.KEY_BEST_SCORE_12, bestScore);
-        //        } else if (mode == 16) {
-        //            PreferencesUtils.putLong(context, Extra.Key.KEY_BEST_SCORE_16, bestScore);
-        //        }
     }
 
 }

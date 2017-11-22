@@ -38,6 +38,7 @@ public class SettingsFragment extends BaseZAdsFragment implements View.OnClickLi
         view.findViewById(R.id.layout_difficulty).setOnClickListener(this);
         view.findViewById(R.id.layout_sound).setOnClickListener(this);
         view.findViewById(R.id.layout_music).setOnClickListener(this);
+        view.findViewById(R.id.btn_ok).setOnClickListener(this);
 
         mDifficulty = (TextView) view.findViewById(R.id.tv_difficulty);
         mSound = (TextView) view.findViewById(R.id.tv_sound);
@@ -96,6 +97,8 @@ public class SettingsFragment extends BaseZAdsFragment implements View.OnClickLi
                 PreferencesUtils.putBoolean(context, Extra.Key.SETTING_MUSIC, true);
                 mMusic.setText(R.string.settings_on);
             }
+        } else if (id == R.id.btn_ok) {
+            removeFragment();
         }
     }
 

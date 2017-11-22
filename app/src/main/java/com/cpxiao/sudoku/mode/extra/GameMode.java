@@ -15,6 +15,7 @@ public final class GameMode {
     private static int[] mode9 = {R.string.btn_9_grid, 9, 3, 3};
     private static int[] mode12 = {R.string.btn_12_grid, 12, 3, 4};
     private static int[] mode16 = {R.string.btn_16_grid, 16, 4, 4};
+    private static int[] mode20 = {R.string.btn_20_grid, 20, 4, 5};
 
-    public static int[][] MODE_ARRAY = {mode4, mode6, mode9, mode12, mode16};
+    public static int[][] MODE_ARRAY = {mode4, mode6, mode9, mode12, mode16, mode20};
 }

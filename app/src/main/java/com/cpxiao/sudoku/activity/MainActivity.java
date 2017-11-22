@@ -23,10 +23,16 @@ public class MainActivity extends BaseZAdsActivity {
     }
 
     private void loadAds() {
-//        initAdMobAds50("ca-app-pub-4157365005379790/5817111468");
-//        initAdMobAds50("ca-app-pub-4157365005379790/8481785667");
-//        initFbAds50("225277207901222_352811625147779");
-//        initFbAds50("225277207901222_225282477900695");
+        //        initAdMobAds50("ca-app-pub-4157365005379790/5817111468");
+        //        initAdMobAds50("ca-app-pub-4157365005379790/8481785667");
+        //        initFbAds50("225277207901222_352811625147779");
+        //        initFbAds50("225277207901222_225282477900695");
         loadZAds(ZAdPosition.POSITION_MAIN);
+    }
+
+    @Override
+    protected void onDestroy() {
+        ZAdManager.getInstance().destroyAllPosition(getApplicationContext());
+        super.onDestroy();
     }
 }

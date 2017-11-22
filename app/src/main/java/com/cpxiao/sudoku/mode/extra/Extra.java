@@ -7,9 +7,9 @@ public final class Extra {
 
     public static final class Key {
 
-        public static final long KEY_BEST_SCORE_DEFAULT = 1800000;
+        public static final long KEY_BEST_SCORE_DEFAULT = 0;
 
-        static final String BEST_SCORE_FORMAT = "KEY_BEST_SCORE_%s_%s";
+        private static final String BEST_SCORE_FORMAT = "KEY_BEST_SCORE_%s_%s";
 
 
         public static final String KEY_SAVED_SUDOKU = "KEY_SAVED_SUDOKU";
